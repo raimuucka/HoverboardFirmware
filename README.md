@@ -15,6 +15,7 @@ Other setup guides:
 
 
 ## Acknowledgments
+This is Fork of https://github.com/isabellesimova/HoverboardFirmware.
 Inspiration for the orginal version of this code can be attributed to [NiklasFauth/Hoverboard-Board-Hack](https://github.com/NiklasFauth/Hoverboard-Board-Hack).
 
 ## License
