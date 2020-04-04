@@ -109,11 +109,17 @@ int main(void)
  * Update the motors to the new speeds.
  */
 static void receive_data() {
-	int uart_rx_status = Uart_RX_process();
-	if (uart_rx_status == 1) {
-		last_rx_time = HAL_GetTick();
-		buzzer_short_beep();
-		motors_speeds(speeds[0], speeds[1]);
+	if (Uart_is_RX_available())
+	{
+		int uart_rx_status = Uart_RX_process();
+
+		if (uart_rx_status == 1) {
+			last_rx_time = HAL_GetTick();
+#ifdef BUZZER_START_DEBUG
+			buzzer_short_beep();
+#endif // BUZZER_START_DEBUG
+			motors_speeds(speeds[0], speeds[1]);
+		}
 	}
 }
 
