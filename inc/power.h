@@ -24,6 +24,8 @@ void button_init(void);
 uint8_t button_pressed(void);
 void button_toggle(void);
 
+void setPower(GPIO_PinState value);
+
 extern void error_handler(void);
 
 #ifdef __cplusplus

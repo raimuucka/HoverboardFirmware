@@ -57,3 +57,13 @@ uint8_t button_pressed(void) {
 void button_toggle(void){
 	HAL_GPIO_TogglePin(BUTTON_GPIO_PORT, BUTTON_PIN_OUT);
 }
+
+void setPower(GPIO_PinState value)
+{
+	HAL_GPIO_WritePin(BUTTON_GPIO_PORT, BUTTON_PIN_OUT, value)
+}
+
+bool IsPowerSet()
+{
+	return HAL_GPIO_IsPinSet(BUTTON_GPIO_PORT, BUTTON_PIN_OUT);
+}

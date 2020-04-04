@@ -78,6 +78,15 @@ int main(void)
 	while (1) {
 		time = HAL_GetTick();
 
+		if (button_pressed()) {
+			while (button_pressed()) {
+				HAL_IWDG_Refresh(&hiwdg);
+			}
+			buzzer_long_beep();
+			HAL_Delay(350);
+			button_toggle();
+		}
+
 		// get the commands every RX_WAIT_PERIOD ms
 		if (time - last_rx_time > RX_WAIT_PERIOD) {
 			if (!CHK_ERROR_BIT(status, STATUS_LOW_BATTERY) && !CHK_ERROR_BIT(status, STATUS_IS_CHARGING)) {
@@ -93,6 +102,24 @@ int main(void)
 		// check to make sure power levels are ok
 		if (time - last_pwr_time > POWER_CHECK_PERIOD) {
 			check_power();
+		}
+
+		if (IsPowerSet() && Uart_is_TX_free())
+		{
+			Uart_TX("POWER IS ON\n");
+		}
+		else
+		{
+			Uart_TX("POWER IS OFF\n");
+		}
+
+		char* string = new char[50];
+		float batteryVoltage = GET_BatteryAverage();
+		sprintf((char*)&string[0], "Bat: %0.f\n", batteryVoltage);
+
+		if (Uart_is_TX_free())
+		{
+			Uart_TX(&string[0]);
 		}
 
 		HAL_IWDG_Refresh(&hiwdg);   //819mS
@@ -117,6 +144,9 @@ static void receive_data() {
 			last_rx_time = HAL_GetTick();
 #ifdef BUZZER_START_DEBUG
 			buzzer_short_beep();
+			HAL_Delay(100);
+			buzzer_short_beep();
+			HAL_Delay(100);
 #endif // BUZZER_START_DEBUG
 			motors_speeds(speeds[0], speeds[1]);
 		}

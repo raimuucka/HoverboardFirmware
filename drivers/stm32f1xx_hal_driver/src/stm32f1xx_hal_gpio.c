@@ -508,6 +508,11 @@ void HAL_GPIO_TogglePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
   GPIOx->ODR ^= GPIO_Pin;
 }
 
+bool HAL_GPIO_IsPinSet(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+{
+    return (GPIOx->ODR & GPIO_Pin != 0) ? true : false;
+}
+
 /**
 * @brief  Locks GPIO Pins configuration registers.
 * @note   The locking mechanism allows the IO configuration to be frozen. When the LOCK sequence
