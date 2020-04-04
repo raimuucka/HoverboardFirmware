@@ -68,6 +68,13 @@ int main(void)
 	last_tx_time = HAL_GetTick();
 	last_pwr_time = HAL_GetTick();
 
+
+	//MotorR_start();
+	//MotorL_start();
+	//
+	//MotorR_pwm(70);
+	//MotorL_pwm(-70);
+
 	while (1) {
 		time = HAL_GetTick();
 
@@ -105,6 +112,7 @@ static void receive_data() {
 	int uart_rx_status = Uart_RX_process();
 	if (uart_rx_status == 1) {
 		last_rx_time = HAL_GetTick();
+		buzzer_short_beep();
 		motors_speeds(speeds[0], speeds[1]);
 	}
 }
