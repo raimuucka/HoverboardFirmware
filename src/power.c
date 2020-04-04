@@ -60,10 +60,10 @@ void button_toggle(void){
 
 void setPower(GPIO_PinState value)
 {
-	HAL_GPIO_WritePin(BUTTON_GPIO_PORT, BUTTON_PIN_OUT, value)
+	HAL_GPIO_WritePin(BUTTON_GPIO_PORT, BUTTON_PIN_OUT, value);
 }
 
-bool IsPowerSet()
+GPIO_PinState IsPowerSet()
 {
 	return HAL_GPIO_IsPinSet(BUTTON_GPIO_PORT, BUTTON_PIN_OUT);
 }

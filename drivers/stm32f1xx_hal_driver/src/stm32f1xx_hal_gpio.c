@@ -508,9 +508,9 @@ void HAL_GPIO_TogglePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
   GPIOx->ODR ^= GPIO_Pin;
 }
 
-bool HAL_GPIO_IsPinSet(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+GPIO_PinState HAL_GPIO_IsPinSet(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 {
-    return (GPIOx->ODR & GPIO_Pin != 0) ? true : false;
+    return (GPIOx->ODR & GPIO_Pin) != 0 ? GPIO_PIN_SET : GPIO_PIN_RESET;
 }
 
 /**

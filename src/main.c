@@ -6,6 +6,7 @@
 #include "uart.h"
 #include "adc.h"
 #include "motor.h"
+#include <stdlib.h>
 
 extern volatile struct UART uart;
 
@@ -84,6 +85,16 @@ int main(void)
 			}
 			buzzer_long_beep();
 			HAL_Delay(350);
+
+			if(IsPowerSet() == GPIO_PIN_SET)
+			{
+				setPower(GPIO_PIN_RESET);
+			}
+			else
+			{
+				setPower(GPIO_PIN_SET);
+			}
+
 			button_toggle();
 		}
 
@@ -103,19 +114,24 @@ int main(void)
 		if (time - last_pwr_time > POWER_CHECK_PERIOD) {
 			check_power();
 		}
+		
+		HAL_Delay(350);
 
-		if (IsPowerSet() && Uart_is_TX_free())
+		if(Uart_is_TX_free())
 		{
-			Uart_TX("POWER IS ON\n");
-		}
-		else
-		{
-			Uart_TX("POWER IS OFF\n");
+			if (IsPowerSet() == GPIO_PIN_SET)
+			{
+				Uart_TX("POWER IS ON\n");
+			}
+			else
+			{
+				Uart_TX("POWER IS OFF\n");
+			}
 		}
 
-		char* string = new char[50];
-		float batteryVoltage = GET_BatteryAverage();
-		sprintf((char*)&string[0], "Bat: %0.f\n", batteryVoltage);
+		char* string = malloc(50 * sizeof(char));
+		int batteryVoltage = get_battery_volt();
+		sprintf((char*)&string[0], "Bat: %i\n", batteryVoltage);
 
 		if (Uart_is_TX_free())
 		{

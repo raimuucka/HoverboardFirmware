@@ -25,6 +25,7 @@ uint8_t button_pressed(void);
 void button_toggle(void);
 
 void setPower(GPIO_PinState value);
+GPIO_PinState IsPowerSet();
 
 extern void error_handler(void);
 
