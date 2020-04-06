@@ -38,6 +38,7 @@ void adcs_setup_and_init(void);
 
 // ------------ROLLING_AVG----------------
 float get_battery_volt(void);
+float get_current_battery_volt(void);
 float get_motor_current(struct ADC *adc);
 
 extern void error_handler(void);

@@ -68,13 +68,24 @@ int main(void)
 	last_rx_time = HAL_GetTick();
 	last_tx_time = HAL_GetTick();
 	last_pwr_time = HAL_GetTick();
+	
+	//int buzzerCounter = 0;
+	while(button_pressed())
+	{
+		HAL_Delay(350);
+		buzzer_one_beep();
+		HAL_Delay(350);
+	}
 
+	setPower(GPIO_PIN_SET);
 
 	//MotorR_start();
 	//MotorL_start();
 	//
 	//MotorR_pwm(70);
 	//MotorL_pwm(-70);
+	
+	int transmitNumber = 0;
 
 	while (1) {
 		time = HAL_GetTick();
@@ -83,6 +94,7 @@ int main(void)
 			while (button_pressed()) {
 				HAL_IWDG_Refresh(&hiwdg);
 			}
+
 			buzzer_long_beep();
 			HAL_Delay(350);
 
@@ -94,8 +106,6 @@ int main(void)
 			{
 				setPower(GPIO_PIN_SET);
 			}
-
-			button_toggle();
 		}
 
 		// get the commands every RX_WAIT_PERIOD ms
@@ -114,29 +124,28 @@ int main(void)
 		if (time - last_pwr_time > POWER_CHECK_PERIOD) {
 			check_power();
 		}
-		
-		HAL_Delay(350);
 
 		if(Uart_is_TX_free())
 		{
-			if (IsPowerSet() == GPIO_PIN_SET)
+			if(transmitNumber == 0)
 			{
-				Uart_TX("POWER IS ON\n");
+
+				char* string = malloc(50 * sizeof(char));
+				int batteryVoltage = (int)get_current_battery_volt();
+				sprintf((char*)&string[0], "Bat: %i\n", (int)(batteryVoltage * 0.37038));
+
+				Uart_TX(&string[0]);
 			}
-			else
+
+			transmitNumber++;
+			
+			if(transmitNumber > 30)
 			{
-				Uart_TX("POWER IS OFF\n");
+				transmitNumber = 0;
 			}
 		}
-
-		char* string = malloc(50 * sizeof(char));
-		int batteryVoltage = get_battery_volt();
-		sprintf((char*)&string[0], "Bat: %i\n", batteryVoltage);
-
-		if (Uart_is_TX_free())
-		{
-			Uart_TX(&string[0]);
-		}
+		
+		HAL_Delay(10);
 
 		HAL_IWDG_Refresh(&hiwdg);   //819mS
 	}

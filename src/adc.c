@@ -45,6 +45,10 @@ float get_battery_volt(void) {
 	return (float) (battery_voltage / ROLLING_SAMPLES) * ADC_BATTERY_VOLT;
 }
 
+float get_current_battery_volt(void) {
+	return (float) ((float)adc_battery()) * ADC_BATTERY_VOLT;
+}
+
 /* Return a rolling average of the motor current (last 16 samples).
  */
 float get_motor_current(struct ADC *adc) {
