@@ -11,7 +11,8 @@ This repository contains firmware to reflash the motor controller that comes wit
 Other setup guides:
 - [Debug with SystemWorkbench](dev_env/SystemWorkbench/README.md)
 
-
+##Man board hardware Info
+![otter](https://raw.githubusercontent.com/raimuucka/HoverboardFirmware/master/Main_Board_pinout.png)
 
 
 ## Acknowledgments
